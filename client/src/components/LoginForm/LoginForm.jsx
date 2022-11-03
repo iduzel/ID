@@ -13,9 +13,10 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ValidationTextFields() {
+  const navigate = useNavigate()
   const [values, setValues] = React.useState({
     password: "",
     showPassword: false,
@@ -36,9 +37,13 @@ export default function ValidationTextFields() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const handleSubmit = () => {
+    console.log("values", values);
+    navigate('/home')
+  };
   return (
     <Box className="loginform">
-     
       <Box>
         <Box
           component="form"
@@ -56,44 +61,42 @@ export default function ValidationTextFields() {
             color="warning"
             onChange={(e) => setEmailValue(e.target.value)}
           />
+          <FormControl sx={{ m: 1, width: "50ch" }} variant="standard">
+            <InputLabel color="warning" htmlFor="standard-adornment-password">
+              Password
+            </InputLabel>
+            <Input
+              color="warning"
+              id="standard-adornment-password"
+              type={values.showPassword ? "text" : "password"}
+              value={values.password}
+              onChange={handleChange("password")}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    color="warning"
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          <Button onSubmit={handleSubmit} color="warning" variant="contained">
+            SIGN IN
+          </Button>
         </Box>
-
-        <FormControl sx={{ m: 1, width: "50ch" }} variant="standard">
-          <InputLabel color="warning" htmlFor="standard-adornment-password">
-            Password
-          </InputLabel>
-          <Input
-            color="warning"
-            id="standard-adornment-password"
-            type={values.showPassword ? "text" : "password"}
-            value={values.password}
-            onChange={handleChange("password")}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  color="warning"
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                >
-                  {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-        </FormControl>
-        <Button color="warning" variant="contained">
-          SIGN IN
-        </Button>
       </Box>
       <Box
         sx={{
           color: "black",
         }}
-        
       >
         <div className="">Don't have an account!</div>
-        <Link to='/register'>Sign Up</Link>
+        <Link to="/register">Sign Up</Link>
       </Box>
     </Box>
   );

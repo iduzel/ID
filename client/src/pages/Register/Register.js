@@ -5,12 +5,7 @@ import axios from "axios";
 import { Input } from "../../components/Atoms/Inputs/Input.jsx";
 import { Button2 } from "../../components/Atoms/Buttons/Button";
 import CheckboxAtom from "../../components/Atoms/Checkboxes/Checkbox";
-import {
-  FormControlLabel,
-  FormGroup,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { FormControlLabel, FormGroup, Typography } from "@mui/material";
 import Password from "../../components/molecules/Password.jsx";
 
 export default function Register() {
@@ -31,8 +26,6 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("handleSubmit", data);
-
     if (!data.email || !data.password) return console.log("EMPTY REGISTER");
     if (data.password.length < 8)
       return alert("The password must be at least 8 characters");
@@ -45,12 +38,18 @@ export default function Register() {
     if (!specialChars.test(data.password))
       return alert("The password must have at least 1 special character");
 
-    const response = await axios.post("/users/register", data);
-    console.log("response REGISTER is ", response);
+    await axios.post("/users/register", data);
 
     setData({ email: "", password: "" });
 
     navigate("/");
+  };
+
+  // VERIFY EMAIL BY CODE
+  const [verifyNumber, setVerifyNumber] = useState({ number: undefined });
+  const handleSend = async (e) => {
+    e.preventDefault();
+    await axios.post("/users/verify", verifyNumber);
   };
 
   return (
@@ -87,6 +86,7 @@ export default function Register() {
             max="20"
             onChange={(e) => setData({ ...data, password: e.target.value })}
             width="100%"
+            label='Password'
           />
 
           <FormGroup
@@ -193,6 +193,22 @@ export default function Register() {
             </small>
           </div>
         </form>
+      </div>
+      <div>
+        <h6>Please enter the code what We have sent to your email account</h6>
+        <div>
+          <input
+            className=" verifyInput "
+            type="text"
+            minLength={6}
+            maxLength={6}
+            value={verifyNumber.number}
+            onChange={(e) =>
+              setVerifyNumber({ ...verifyNumber, number: e.target.value })
+            }
+          />
+          <button onClick={handleSend}>SEND</button>
+        </div>
       </div>
     </div>
   );
