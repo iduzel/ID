@@ -6,12 +6,17 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useEffect } from "react";
 
 export default function Password(props) {
+
+
   const [values, setValues] = React.useState({
     password: props.password,
     showPassword: false,
   });
+
+
 
   const handleClickShowPassword = () => {
     setValues({
@@ -25,8 +30,10 @@ export default function Password(props) {
   };
 
   return (
-    <FormControl className=" rounded w-75" variant="outlined">
-      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+    <FormControl className=" rounded  w-75" variant="outlined">
+      <InputLabel htmlFor="outlined-adornment-password">
+        {props.label}
+      </InputLabel>
       <OutlinedInput
         sx={{
           width: props.width,
@@ -35,7 +42,6 @@ export default function Password(props) {
           margin: props.margin,
         }}
         fullWidth
-        placeholder={props.placeholder}
         required={props.required}
         type={values.showPassword ? "text" : "password"}
         variant={props.variant}
