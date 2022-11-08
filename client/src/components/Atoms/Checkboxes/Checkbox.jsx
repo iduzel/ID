@@ -7,9 +7,9 @@ export default function CheckboxAtom(props) {
       sx={{
         padding:props.padding,
         margin:props.margin,
-        color: 'yellow',
+        color: props.color,
         "&.Mui-checked": {
-          color: 'orange',
+          color: props.checkedColor,
         },
         '& .MuiSvgIcon-root': { fontSize: props.checkboxSize },
         

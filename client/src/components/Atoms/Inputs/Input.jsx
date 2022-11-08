@@ -4,11 +4,28 @@ import TextField from "@mui/material/TextField";
 const Input = (props) => {
   return (
     <TextField
+      inputProps={{
+        minLength: props.min,
+        maxLength: props.max,      
+       
+      }}
       sx={{
         width: props.width,
         backgroundColor: props.bg,
-        borderRadius: props.borderRadius,
         margin: props.margin,
+        border: props.border,
+        borderRadius: props.borderRadius,  
+        borderColor: props.borderColor,        
+        input: {
+         
+          color: 'yellow',
+          "&::placeholder": {    // <----- Add this.
+            // opacity: 1,
+            color:'aqua'
+          },
+       },
+       label: { color: props.labelColor } 
+       
       }}
       fullWidth
       placeholder={props.placeholder}
@@ -22,10 +39,7 @@ const Input = (props) => {
       className={props.className}
       onFocus={props.onFocus}
       onBlur={props.onBlur}
-      inputProps={{
-        minLength: props.min,
-        maxLength: props.max,
-      }}
+     
     />
   );
 };

@@ -54,20 +54,59 @@ router.post("/verify", async (req, res) => {
 
 // FORGOT PASSWORD
 
-router.post("/forgotPassword", async (req, res) => {
+
+
+let forgottenEmail = '';
+router.post("/forgotPassword", async (req, res) => { 
   try {
-    const email2 = req.body.name;
-    console.log("email2 FP : ", email2);
+    forgottenEmail = req.body.name;
+    console.log("email2 FP : ", forgottenEmail);
+
+    const html = `<h1>Dear ${forgottenEmail}</h1>
+                    <h2>to set new password click on --></h2>
+                    <a href="http://localhost:3000/setNewPassword">SET NEW PASS</a>
+    `;
 
     const getUser = await User.findOne({
-      $or: [{ email: email2 }],
+      $or: [{ email: forgottenEmail }],
     });
 
     if (!getUser) return console.log("No such an email registered");
-    
-    res.send({success:true})
-  } catch (error) {}
+   
+    sendEmail(forgottenEmail, "Set New Password", "NEW PASSWORD", html)
+    res.send({success:true, forgottenEmail})
+  } catch (error) {
+    console.log(error.message)
+  }
 });
+
+// SET NEW PASSWORD
+router.post('/newPassword', async (req, res) => {
+ let email = forgottenEmail;
+  const {  password } = req.body;
+  try {
+    console.log('newPassword req.body',req.body)
+    await User.findOne({  email: email     }, function(err, user) {
+      if(err){
+        console.log(err)
+      }else {
+        user.password = password;
+        user.save();
+        console.log('Result: ', user)
+        res.send({success: true, user})
+      }
+    }); 
+       
+       
+
+
+
+
+  
+  } catch (error) {
+    console.log(error.message)
+  }
+})
 
 // LOGIN
 router.post("/login", async (req, res) => {
