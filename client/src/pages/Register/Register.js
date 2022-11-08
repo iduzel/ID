@@ -38,8 +38,9 @@ export default function Register() {
     if (!specialChars.test(data.password))
       return alert("The password must have at least 1 special character");
 
-    await axios.post("/users/register", data);
+   const registerResponse =  await axios.post("/users/register", data);
 
+   console.log('registerResponse: ', registerResponse.data)
     setData({ email: "", password: "" });
 
     navigate("/");
@@ -49,7 +50,10 @@ export default function Register() {
   const [verifyNumber, setVerifyNumber] = useState({ number: undefined });
   const handleSend = async (e) => {
     e.preventDefault();
-    await axios.post("/users/verify", verifyNumber);
+    const response =  await axios.post("/users/verify", verifyNumber);
+
+   ( (response.data.success = true) && navigate('/'))
+   
   };
 
   return (
